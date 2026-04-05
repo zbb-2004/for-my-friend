@@ -972,8 +972,7 @@
                         <!-- 视频展示区 -->
                         <div class="reward-video-area" id="rewardVideo5" style="display:none">
                             <div class="video-player-wrap" id="videoWrap5" onclick="openVideoPlayer()">
-                                <video id="video5" preload="metadata" src="./media/视频.mp4"></video>
-                                <div class="video-play-overlay" id="videoOverlay5">
+                                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ffb6c1,#dda0dd);border-radius:4px;">
                                     <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="22" fill="rgba(139,90,139,0.7)" stroke="#fff" stroke-width="2"/><path d="M19 14L36 24L19 34V14Z" fill="#fff"/></svg>
                                 </div>
                             </div>
@@ -1237,36 +1236,10 @@
     videoLightbox.addEventListener('click', function(e) { if (e.target === videoLightbox || e.target === vContainer) { closeVideoPlayer(); } });
     
     function openVideoPlayer() {
-        var src = document.getElementById('video5').getAttribute('src');
-        // 先彻底清除旧状态，再设置新 src
-        vVideo.removeAttribute('src');
-        vVideo.load();
-        vVideo.src = src;
+        // B站嵌入播放器
+        vContainer.innerHTML = '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=116352861865480&bvid=BV16qSXBrEoc&cid=37268029454&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:90vw;max-width:900px;height:60vh;max-height:540px;border-radius:8px;"></iframe>';
         videoLightbox.style.display = 'flex';
-        // 用 canplay 代替 onloadeddata，更可靠；同时保留 canplaythrough 作为备选
-        function tryPlay() {
-            vVideo.removeEventListener('canplay', tryPlay);
-            vVideo.removeEventListener('canplaythrough', tryPlay);
-            vVideo.play().catch(function(){});
-        }
-        vVideo.addEventListener('canplay', tryPlay);
-        vVideo.addEventListener('canplaythrough', tryPlay);
-        vVideo.load();
     }
-
-    // 视频预览
-    (function setupVideoPreview() {
-        const video5 = document.getElementById('video5');
-        const overlay5 = document.getElementById('videoOverlay5');
-        
-        if (!video5 || !overlay5) {
-            console.warn('视频元素未找到');
-            return;
-        }
-        
-        // 保持覆盖层显示，作为播放按钮
-        overlay5.style.display = 'flex';
-    })();
 
     document.getElementById('loadBtn').addEventListener('click', () => {
         const loadingScreen = document.getElementById('loadingScreen');
